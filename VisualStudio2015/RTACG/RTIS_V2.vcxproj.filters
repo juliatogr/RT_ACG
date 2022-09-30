@@ -31,7 +31,7 @@
     <Filter Include="src\shaders">
       <UniqueIdentifier>{fa0c3b76-57a5-4039-a49f-6cb7086645d7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\shapes">
+    <Filter Include="src\shaders\shapes">
       <UniqueIdentifier>{471790e2-2b7b-4bb4-843a-8f2850c9ecfc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -88,13 +88,16 @@
       <Filter>src\shaders</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\shapes\shape.cpp">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\shapes\infiniteplan.cpp">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\shapes\sphere.cpp">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\shaders\depthshader.cpp">
+      <Filter>src\shaders</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,13 +150,16 @@
       <Filter>src\shaders</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shapes\shape.h">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shapes\sphere.h">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shapes\infiniteplan.h">
-      <Filter>src\shapes</Filter>
+      <Filter>src\shaders\shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\shaders\depthshader.h">
+      <Filter>src\shaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

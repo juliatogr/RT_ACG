@@ -138,8 +138,8 @@ void PaintImage(Film* film)
         for (size_t col = 0; col < resX; col++)
         {
             //CHANGE...()            
-            Vector3D random_color = Vector3D((double) col / resX, (double) lin / resY, 0);
-            film->setPixelValue(col,lin, random_color);
+            Vector3D color = Vector3D((double) col / resX, (double) lin / resY, 0);
+            film->setPixelValue(col,lin, color);
            
         }
     }
@@ -181,7 +181,13 @@ int main()
     // 
     raytrace(cam, shader, film, objectsList, lightSourceList);
 
-    
+    // Declare the shader
+    Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    Vector3D color2(0, 1, 0);
+    double maxDist2 = 7.5;
+
+    Shader* shader2 = new DepthShader(color2, maxDist2, bgColor2);
+    raytrace(cam, shader2, film, objectsList, lightSourceList);
 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;

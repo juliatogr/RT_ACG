@@ -43,26 +43,30 @@ bool Utils::hasIntersection(const Ray& cameraRay, const std::vector<Shape*>& obj
 
 bool Utils::getClosestIntersection(const Ray& cameraRay, const std::vector<Shape*>& objectsList, Intersection& its) //or Closest Hit Ray
 {
-    std::cout << "Need to implement the function Utils::getClosestIntersection() in the file utils.cpp" << std::endl;
-
-    //
-    // Write your code bellow
-    //
-    // (...)
-    //
+    //std::cout << "Need to implement the function Utils::getClosestIntersection() in the file utils.cpp" << std::endl;
+    bool found = false;
 
     for (size_t objIndex = 0; objIndex < objectsList.size(); objIndex++)
     {
         // Get the current object
         const Shape* obj = objectsList.at(objIndex);
 
-        if (obj->rayIntersect(cameraRay, its)) {
-            return true;
+        Intersection& _its = Intersection();
+        double minDist = 100000;
+
+        if (obj->rayIntersect(cameraRay, _its)) {
+
+            Vector3D resta = its.itsPoint - _its.itsPoint;
+            double hitDist = sqrt(pow(resta.x, 2) + pow(resta.y, 2) + pow(resta.z, 2));
+
+            if (minDist > hitDist) {
+                its = _its;
+                found = true;
+            }
         };
         //(...)
     }
-
-    return false;
+    return found;
 }
 
 double interpolate(double val, double y0, double x0, double y1, double x1 )

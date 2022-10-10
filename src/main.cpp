@@ -184,7 +184,9 @@ int main()
     // Declare the shader
     Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Vector3D color2(0, 1, 0);
-    double maxDist2 = 7.5;
+
+
+    double maxDist2 = 7;
 
     Shader* shader2 = new DepthShader(color2, maxDist2, bgColor2);
     raytrace(cam, shader2, film, objectsList, lightSourceList);

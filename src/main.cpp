@@ -129,7 +129,7 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     // Define and place a sphere
     Matrix4x4 sphereTransform1;
     sphereTransform1 = sphereTransform1.translate(Vector3D(-1.0, -0.5, 2 * std::sqrt(2.0)));
-    Shape* s1 = new Sphere(0.25, sphereTransform1, green_50);
+    Shape* s1 = new Sphere(0.25, sphereTransform1, purple_30);
 
     // Define and place a sphere
     Matrix4x4 sphereTransform2;
@@ -139,7 +139,7 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     // Define and place a sphere
     Matrix4x4 sphereTransform3;
     sphereTransform3 = sphereTransform3.translate(Vector3D(0.3, -0.75, 3.5));
-    Shape* s3 = new Sphere(0.25, sphereTransform3, green_50);
+    Shape* s3 = new Sphere(0.25, sphereTransform3, pink_80);
 
     // Store the objects in the object list
     objectsList->push_back(s1);
@@ -155,9 +155,9 @@ void buildSceneSphere(Camera*& cam, Film*& film,
     // ADD YOUR LIGHT SOURCES HERE
     // (...)
     // 
-    PointLightSource p1 = PointLightSource(Vector3D(1,1,0.2), Vector3D(0.3,0.7,0.2));
-    PointLightSource p2 = PointLightSource(Vector3D(0, 1, 0), Vector3D(0.7, 0.2, 0.5));
-    PointLightSource p3 = PointLightSource(Vector3D(0.3, 1, 1), Vector3D(0.3, 0.1, 0.6));
+    PointLightSource p1 = PointLightSource(Vector3D(1,1,0.2), Vector3D(0.3,0.7,0.2)*10);
+    PointLightSource p2 = PointLightSource(Vector3D(0, 1, 0), Vector3D(0.7, 0.2, 0.5)* 10);
+    PointLightSource p3 = PointLightSource(Vector3D(0.3, 1, 1), Vector3D(0.3, 0.1, 0.6)* 10);
     //
     // DO NOT FORGET TO STORE THE LIGHT SOURCES IN THE "lightSourceList"
     // (...)

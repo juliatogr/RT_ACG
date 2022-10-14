@@ -9,10 +9,7 @@ Mirror::Mirror() :
 
 Mirror::Mirror(Vector3D& kd_, Vector3D& ks_, double shininess_) :
     shininess(shininess_), kd(kd_), ks(ks_)
-{
-
-}
-
+{ }
 
 
 bool Mirror::hasSpecular() const

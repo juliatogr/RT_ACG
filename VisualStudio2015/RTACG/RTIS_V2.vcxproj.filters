@@ -90,7 +90,7 @@
     <ClCompile Include="..\..\src\shapes\shape.cpp">
       <Filter>src\shaders\shapes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\shapes\infiniteplan.cpp">
+    <ClCompile Include="..\..\src\shapes\infiniteplane.cpp">
       <Filter>src\shaders\shapes</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\shapes\sphere.cpp">
@@ -102,11 +102,17 @@
     <ClCompile Include="..\..\src\shaders\normalshader.cpp">
       <Filter>src\shaders</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\materials\phongmaterial.cpp">
-      <Filter>src\materials</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\shaders\directshader.cpp">
       <Filter>src\shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\materials\phong.cpp">
+      <Filter>src\materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\core\hemisphericalsampler.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\materials\mirror.cpp">
+      <Filter>src\materials</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,7 +170,7 @@
     <ClInclude Include="..\..\src\shapes\sphere.h">
       <Filter>src\shaders\shapes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\shapes\infiniteplan.h">
+    <ClInclude Include="..\..\src\shapes\infiniteplane.h">
       <Filter>src\shaders\shapes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\shaders\depthshader.h">
@@ -173,11 +179,17 @@
     <ClInclude Include="..\..\src\shaders\normalshader.h">
       <Filter>src\shaders</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\materials\phongmaterial.h">
-      <Filter>src\materials</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\shaders\directshader.h">
       <Filter>src\shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\materials\phong.h">
+      <Filter>src\materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\core\hemisphericalsampler.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\materials\mirror.h">
+      <Filter>src\materials</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

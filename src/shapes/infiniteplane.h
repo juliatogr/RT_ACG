@@ -1,13 +1,13 @@
-#ifndef INFINITEPLAN_H
-#define INFINITEPLAN_H
+#ifndef INFINITEPLANE_H
+#define INFINITEPLANE_H
 
 #include "shape.h"
 
-class InfinitePlan : public Shape
+class InfinitePlane : public Shape
 {
 public:
-    InfinitePlan() = delete;
-    InfinitePlan(const Vector3D &p0_, const Vector3D &normal_,
+    InfinitePlane() = delete;
+    InfinitePlane(const Vector3D &p0_, const Vector3D &normal_,
                  Material *mat_);
 
     // Get the normal at a surface point in world coordinates
@@ -28,6 +28,6 @@ private:
     Vector3D nWorld;
 };
 
-std::ostream &operator<<(std::ostream &out, const InfinitePlan &t);
+std::ostream &operator<<(std::ostream &out, const InfinitePlane &t);
 
-#endif // INFINITEPLAN_H
+#endif // INFINITEPLANE_H

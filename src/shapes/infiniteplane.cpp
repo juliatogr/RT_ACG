@@ -1,17 +1,17 @@
-#include "infiniteplan.h"
+#include "infiniteplane.h"
 
-InfinitePlan::InfinitePlan(const Vector3D &p0_, const Vector3D &normal_,
+InfinitePlane::InfinitePlane(const Vector3D &p0_, const Vector3D &normal_,
          Material *mat_) :
     Shape(Matrix4x4(), mat_),
     p0World(p0_), nWorld(normal_.normalized())
 { }
 
-Vector3D InfinitePlan::getNormalWorld() const
+Vector3D InfinitePlane::getNormalWorld() const
 {
     return nWorld;
 }
 
-bool InfinitePlan::rayIntersect(const Ray &rayWorld, Intersection &its) const
+bool InfinitePlane::rayIntersect(const Ray &rayWorld, Intersection &its) const
 {
     // Compute the denominator of the tHit formula
     double denominator = dot(rayWorld.d, nWorld);
@@ -41,7 +41,7 @@ bool InfinitePlan::rayIntersect(const Ray &rayWorld, Intersection &its) const
     return true;
 }
 
-bool InfinitePlan::rayIntersectP(const Ray &rayWorld) const
+bool InfinitePlane::rayIntersectP(const Ray &rayWorld) const
 {
     // Compute the denominator of the tHit formula
     double denominator = dot(rayWorld.d, nWorld);
@@ -63,7 +63,7 @@ bool InfinitePlan::rayIntersectP(const Ray &rayWorld) const
 }
 
 
-std::string InfinitePlan::toString() const
+std::string InfinitePlane::toString() const
 {
     std::stringstream s;
     s << "\tInfinitePlan attributes: \n";
@@ -74,7 +74,7 @@ std::string InfinitePlan::toString() const
     return s.str();
 }
 
-std::ostream &operator<<(std::ostream &out, const InfinitePlan &t)
+std::ostream &operator<<(std::ostream &out, const InfinitePlane &t)
 {
     out << t.toString();
     return out;

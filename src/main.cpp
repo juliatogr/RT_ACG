@@ -19,6 +19,8 @@
 #include "shaders/normalshader.h"
 #include "shaders/directshader.h"
 #include "materials/phong.h"
+#include "materials/mirror.h"
+#include "materials/transmissive.h"
 
 
 
@@ -41,8 +43,8 @@ void buildSceneCornellBox(Camera*& cam, Film*& film,
     Material* greenDiffuse = new Phong(Vector3D(0.2, 0.7, 0.3), Vector3D(0, 0, 0), 100);
     Material* greyDiffuse = new Phong(Vector3D(0.8, 0.8, 0.8), Vector3D(0, 0, 0), 100);
     Material* blueDiffuse = new Phong(Vector3D(0.3, 0.2, 0.7), Vector3D(0, 0, 0), 100);
-    Material* transmissive = new Phong(Vector3D(1, 1, 0.2), Vector3D(1, 1, 0.2), 20);
-    Material* mirror = new Phong(Vector3D(0.0, 0.9, 0.9), Vector3D(0.1, 0.9, 0.9), 50);
+    Material* transmissive = new Transmissive(1.1);
+    Material* mirror = new Mirror();
     Material* red_100 = new Phong(Vector3D(0.7, 0.2, 0.3), Vector3D(0.7, 0.7, 0.2), 100);
 
     /* ******* */
@@ -254,43 +256,46 @@ int main()
     std::vector<Shape*>* objectsList;
     std::vector<PointLightSource>* lightSourceList;
     //Create Scene Geometry and Illumiantion
-    buildSceneSphere(cam, film, objectsList, lightSourceList);
+    buildSceneCornellBox(cam, film, objectsList, lightSourceList);
 
     //---------------------------------------------------------------------------
 
     //Paint Image ONLY TASK 1
-    PaintImage(film);
+     //Declare the shader
+    Vector3D bgColor1(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    Shader* shader1 = new DirectShader(bgColor1);
+    raytrace(cam, shader1, film, objectsList, lightSourceList);
 
-    // Launch some rays! TASK 2,3,...
-    // 
-    //TASK 2
-    raytrace(cam, shader, film, objectsList, lightSourceList);
+    //// Launch some rays! TASK 2,3,...
+    //// 
+    ////TASK 2
+    //raytrace(cam, shader, film, objectsList, lightSourceList);
 
-    //TASK 3
-    // Declare the shader
-    Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
-    Vector3D color2(0, 1, 0);
+    ////TASK 3
+    //// Declare the shader
+    //Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    //Vector3D color2(0, 1, 0);
 
-    double maxDist2 = 7;
+    //double maxDist2 = 7;
 
-    Shader* shader2 = new DepthShader(color2, maxDist2, bgColor2);
-    raytrace(cam, shader2, film, objectsList, lightSourceList);
+    //Shader* shader2 = new DepthShader(color2, maxDist2, bgColor2);
+    //raytrace(cam, shader2, film, objectsList, lightSourceList);
 
 
-    //TASK 4
-    // Declare the shader
-    Vector3D bgColor3(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    ////TASK 4
+    //// Declare the shader
+    //Vector3D bgColor3(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
 
-    Shader* shader3 = new NormalShader(bgColor3);
-    raytrace(cam, shader3, film, objectsList, lightSourceList);
-    // 
-    // 
-    //TASK 5
-    //Declare the shader
-    Vector3D bgColor4(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    //Shader* shader3 = new NormalShader(bgColor3);
+    //raytrace(cam, shader3, film, objectsList, lightSourceList);
+    //// 
+    //// 
+    ////TASK 5
+    ////Declare the shader
+    //Vector3D bgColor4(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
 
-    Shader* shader4 = new DirectShader();
-    raytrace(cam, shader4, film, objectsList, lightSourceList);
+    //Shader* shader4 = new DirectShader();
+    //raytrace(cam, shader4, film, objectsList, lightSourceList);
     // 
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;

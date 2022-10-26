@@ -54,7 +54,28 @@ Vector3D DirectShader::computeColor(const Ray &r,
                 Vector3D wt = its.normal * (-sqrt(refract) + nt * cos) - wo * nt;
 
                 Ray ray_refract(its.itsPoint, wt, r.depth + 1);
-                Lo = computeColor(ray_refract, objList, lsList);
+
+                Intersection its; // Auxiliar structure to store information about the intersection, in case there is one
+                if (Utils::getClosestIntersection(ray_refract, objList, its)) {
+
+                    if (dot(its.normal, wt) > 0){
+                        nt = 1 / nt;
+                        its.normal = -its.normal;
+
+                    }
+                    Vector3D wo = -ray_refract.d;      //Vector from intersection point to view origin
+                    double cos = dot(its.normal, wo);
+                    double sin2 = 1 - cos * cos;
+                    double refract = 1 - nt * nt * sin2;
+
+                    Vector3D wt = its.normal * (-sqrt(refract) + nt * cos) - wo * nt;
+
+                    Ray ray_refract2(its.itsPoint, wt, r.depth + 1);
+
+
+                    Lo = computeColor(ray_refract2, objList, lsList);
+                }
+
 
             } else {
 

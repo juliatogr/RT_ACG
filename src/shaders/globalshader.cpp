@@ -30,6 +30,8 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 if (Utils::hasIntersection(ray_visibility, objList))
                     continue;
                 
+                Li = at * its.shape->getMaterial().getDiffuseCoefficient();
+                
                 Lo += light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal,-r.d ,wi )*dot(its.normal,wi)+Li;
                 }
                 
@@ -66,9 +68,15 @@ Vector3D GlobalShader::computeColor(const Ray &r,
 
                     if (dot(new_its.normal, wt) > 0) {
                         nt = 1 / nt;
-                        new_its.normal = -its.normal;
+                        new_its.normal = -new_its.normal;
 
-                        Ray ray_refract2(new_its.itsPoint, wt, r.depth + 1);
+                        wo = -ray_refract.d;
+                        cos = dot(new_its.normal, wo);
+                        sin2 = 1 - cos * cos;
+                        refract = 1 - nt * nt * sin2;
+                        wt = new_its.normal * (-sqrt(refract) + nt * cos) - wo * nt;
+
+                        Ray ray_refract2(new_its.itsPoint, wt, ray_refract.depth + 1);
                         Lo = computeColor(ray_refract2, objList, lsList);
                     }
                     else {

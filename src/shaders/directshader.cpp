@@ -45,10 +45,10 @@ Vector3D DirectShader::computeColor(const Ray &r,
         if (its.shape->getMaterial().hasTransmission()) {
 
             double nt = its.shape->getMaterial().getIndexOfRefraction();
-            
+
             Vector3D wo = -r.d;      //Vector from intersection point to view origin
             double cos = dot(its.normal, wo);
-            double sin2 = 1 - cos*cos;
+            double sin2 = 1 - cos * cos;
             double refract = 1 - nt * nt * sin2;
 
             if (refract >= 0) {
@@ -61,9 +61,15 @@ Vector3D DirectShader::computeColor(const Ray &r,
 
                     if (dot(new_its.normal, wt) > 0) {
                         nt = 1 / nt;
-                        new_its.normal = -its.normal;
+                        new_its.normal = -new_its.normal;
 
-                        Ray ray_refract2(new_its.itsPoint, wt, r.depth + 1);
+                        wo = -ray_refract.d;
+                        cos = dot(new_its.normal, wo);
+                        sin2 = 1 - cos * cos;
+                        refract = 1 - nt * nt * sin2;
+                        wt = new_its.normal * (-sqrt(refract) + nt * cos) - wo * nt;
+
+                        Ray ray_refract2(new_its.itsPoint, wt, ray_refract.depth + 1);
                         Lo = computeColor(ray_refract2, objList, lsList);
                     }
                     else {
@@ -74,12 +80,13 @@ Vector3D DirectShader::computeColor(const Ray &r,
                     Lo = computeColor(ray_refract, objList, lsList);
                 }
 
-            } else {
+            }
+            else {
 
                 Vector3D wr = its.normal * 2 * dot(its.normal, wo) - wo;
 
                 Ray ray_visibility(its.itsPoint, wr, r.depth + 1);
-                
+
                 Lo = computeColor(ray_visibility, objList, lsList);
             }
         }

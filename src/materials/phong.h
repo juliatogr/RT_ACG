@@ -13,6 +13,7 @@ public:
     bool hasSpecular() const;
     bool hasTransmission() const;
     bool hasDiffuseOrGlossy() const;
+    Vector3D getDiffuseCoefficient() const;
 
     ~Phong();
 

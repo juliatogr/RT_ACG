@@ -13,8 +13,6 @@ Phong::Phong(Vector3D& kd_, Vector3D& ks_, double shininess_) :
 
 }
 
-
-
 bool Phong::hasSpecular() const
 {
     // This material does not have specular component
@@ -39,6 +37,11 @@ Vector3D Phong::getReflectance(const Vector3D& n, const Vector3D& wo, const Vect
     // and the perfect reflection direction
     double cosWrWo = dot(wr, wo);
     return kd* std::max(dot(wi, n),0.0) + ks * pow(cosWrWo, shininess);
+}
+
+Vector3D Phong::getDiffuseCoefficient() const
+{
+    return kd;
 }
 
 Phong::~Phong()

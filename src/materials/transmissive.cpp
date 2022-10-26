@@ -42,3 +42,8 @@ Transmissive::~Transmissive()
 {
 
 }
+
+Vector3D Transmissive::getDiffuseCoefficient() const
+{
+    return Vector3D(-1);
+}

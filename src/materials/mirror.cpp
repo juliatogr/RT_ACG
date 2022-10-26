@@ -37,6 +37,9 @@ Vector3D Mirror::getReflectance(const Vector3D& n, const Vector3D& wo, const Vec
     return kd* std::max(dot(wi, n),0.0) + ks * pow(cosWrWo, shininess);
 }
 
+Vector3D Mirror::getDiffuseCoefficient() const {
+    return Vector3D(-1);
+}
 Mirror::~Mirror()
 {
 

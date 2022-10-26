@@ -18,9 +18,11 @@
 #include "shaders/depthshader.h"
 #include "shaders/normalshader.h"
 #include "shaders/directshader.h"
+#include "shaders/globalshader.h"
 #include "materials/phong.h"
 #include "materials/mirror.h"
 #include "materials/transmissive.h"
+
 
 
 
@@ -260,11 +262,16 @@ int main()
 
     //---------------------------------------------------------------------------
 
-    //Paint Image ONLY TASK 1
-     //Declare the shader
+    //TASK 1
     Vector3D bgColor1(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Shader* shader1 = new DirectShader(bgColor1);
     raytrace(cam, shader1, film, objectsList, lightSourceList);
+
+    //TASK 2.2
+    Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
+    Vector3D at(0.13);
+    Shader* shader2 = new GlobalShader(bgColor2, at);
+    raytrace(cam, shader2, film, objectsList, lightSourceList);
 
     //// Launch some rays! TASK 2,3,...
     //// 

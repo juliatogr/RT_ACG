@@ -30,7 +30,31 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 if (Utils::hasIntersection(ray_visibility, objList))
                     continue;
                 
-                Li = at * its.shape->getMaterial().getDiffuseCoefficient();
+                // intent final
+                double pi = 3.1415;
+                int maxDepth = 5;
+
+                if (r.depth == 0) {
+                    double div = 1 / (2*pi*lsList.size());
+
+                    for (auto const& light : lsList) {
+                        Vector3D P_L2 = lsList[1].getPosition() - its.itsPoint; 
+                        Vector3D wi2 = P_L2.normalized(); 
+                        Vector3D sumTerm = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi2) * dot(its.normal, wi2);
+                        Li += sumTerm * div;
+                    }
+                    
+                } else if (r.depth == maxDepth) {
+                    Li = at * its.shape->getMaterial().getDiffuseCoefficient();
+                }
+                else {
+                    double div = 1 / (4 * pi);
+                    Vector3D P_L2 = lsList[1].getPosition() - its.itsPoint;
+                    Vector3D wi2 = P_L2.normalized();
+                    Vector3D firstTerm = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi2) * dot(its.normal, wi2);
+                    Vector3D secondTerm = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi2) * dot(its.normal, wi2);
+                    Li += (firstTerm + secondTerm) * div;
+                }
                 
                 Lo += light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal,-r.d ,wi )*dot(its.normal,wi)+Li;
                 }

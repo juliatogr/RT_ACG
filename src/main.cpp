@@ -267,43 +267,13 @@ int main()
     Shader* shader1 = new DirectShader(bgColor1);
     raytrace(cam, shader1, film, objectsList, lightSourceList);
 
-    //TASK 2.2
+    //TASK 2
     Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
     Vector3D at(0.13);
     Shader* shader2 = new GlobalShader(bgColor2, at);
     raytrace(cam, shader2, film, objectsList, lightSourceList);
 
-    //// Launch some rays! TASK 2,3,...
-    //// 
-    ////TASK 2
-    //raytrace(cam, shader, film, objectsList, lightSourceList);
-
-    ////TASK 3
-    //// Declare the shader
-    //Vector3D bgColor2(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
-    //Vector3D color2(0, 1, 0);
-
-    //double maxDist2 = 7;
-
-    //Shader* shader2 = new DepthShader(color2, maxDist2, bgColor2);
-    //raytrace(cam, shader2, film, objectsList, lightSourceList);
-
-
-    ////TASK 4
-    //// Declare the shader
-    //Vector3D bgColor3(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
-
-    //Shader* shader3 = new NormalShader(bgColor3);
-    //raytrace(cam, shader3, film, objectsList, lightSourceList);
-    //// 
-    //// 
-    ////TASK 5
-    ////Declare the shader
-    //Vector3D bgColor4(0.0, 0.0, 0.0); // Background color (for rays which do not intersect anything)
-
-    //Shader* shader4 = new DirectShader();
-    //raytrace(cam, shader4, film, objectsList, lightSourceList);
-    // 
+    
     // Save the final result to file
     std::cout << "\n\nSaving the result to file output.bmp\n" << std::endl;
     film->save();

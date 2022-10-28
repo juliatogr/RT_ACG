@@ -88,7 +88,7 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                     Lind = (nTerm + rTerm) * div;*/
                 }
 
-                // Compute final color (direct + indirect light
+                // Compute final color (direct + indirect) light
                 Lo += Ld + Lind;
             }
 

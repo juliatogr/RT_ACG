@@ -35,15 +35,15 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 if (Utils::hasIntersection(ray_visibility, objList))
                     continue;
                 
-                Ld = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi);     
+                Ld = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi) * dot(its.normal, wi);
             }
 
             // Compute indirect light
             double pi = 3.1415;
 
             HemisphericalSampler hs = HemisphericalSampler();
-            int maxDepth = 5;
-            int nSamples = 5;
+            int maxDepth = 30;
+            int nSamples = 100;
 
             if (r.depth == 0) {
                 double div = 1 / (2 * pi * nSamples);
@@ -67,8 +67,10 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 Vector3D wo = -r.d;
                 Vector3D wr = its.normal * 2 * dot(its.normal, wo) - wo;
                 Ray rRay(its.itsPoint, wr, r.depth + 1);
-                Vector3D nTerm(0);
-                Vector3D rTerm(0);
+                Vector3D nTerm(0.5);
+                Vector3D rTerm(0.5);
+               /* Vector3D nTerm = computeColor(nRay, objList, lsList);
+                Vector3D rTerm = computeColor(rRay, objList, lsList);*/
                 Lind += (nTerm + rTerm) * div;
             }
 

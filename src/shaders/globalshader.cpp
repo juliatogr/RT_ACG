@@ -61,8 +61,9 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 }
                 else {
 
-                    for (int i = 0; i < 2; i++) {
-                        double div = 1 / (4 * pi);
+                    double div = 1 / (4 * pi);
+
+                    for (int i = 0; i < 2; i++) {   
                         Vector3D random_wi = hs.getSample(its.normal);
                         Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
                         if (Utils::hasIntersection(random_ray, objList))
@@ -70,6 +71,21 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                         Vector3D sumTerm = computeColor(random_ray, objList, lsList);
                         Lind += sumTerm * div;
                     }
+
+
+                    /*Ray nRay(its.itsPoint, its.normal, r.depth + 1);
+
+                    if (Utils::hasIntersection(nRay, objList))
+                        continue;
+
+                    Vector3D wo = -r.d;
+                    Vector3D wr = its.normal * 2 * dot(its.normal, wo) - wo;
+                    Ray rRay(its.itsPoint, wr, r.depth + 1);
+                    if (Utils::hasIntersection(rRay, objList))
+                        continue;
+                    Vector3D nTerm = computeColor(nRay, objList, lsList);
+                    Vector3D rTerm = computeColor(rRay, objList, lsList);
+                    Lind = (nTerm + rTerm) * div;*/
                 }
 
                 // Compute final color (direct + indirect light

@@ -26,71 +26,54 @@ Vector3D GlobalShader::computeColor(const Ray &r,
             Vector3D Ld(0.0);       // direct light
             Vector3D Lind(0.0);     // indirect light
 
+            // Compute direct light
+
             for (auto const& light: lsList) {
                 Vector3D P_L = light.getPosition() - its.itsPoint; //Vector from intersection point to lightsource
                 Vector3D wi = P_L.normalized(); //Normalized Vector wi
                 Ray ray_visibility(its.itsPoint, wi, 0, Epsilon, P_L.length());
                 if (Utils::hasIntersection(ray_visibility, objList))
                     continue;
-
-                // Compute direct light
+                
                 Ld = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi);     
-
-                // Compute indirect light
-
-
-                double pi = 3.1415;
-
-                HemisphericalSampler hs = HemisphericalSampler();
-                int maxDepth = 5;
-                if (r.depth == 0) {
-                    double div = 1 / (2 * pi * maxDepth);
-
-                    for (int i = 0; i < maxDepth; i++) {
-
-                        Vector3D random_wi = hs.getSample(its.normal);
-                        Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
-                        if (Utils::hasIntersection(random_ray, objList))
-                            continue;
-                        Vector3D sumTerm = computeColor(random_ray, objList, lsList);
-                        Lind += sumTerm * div;
-                    }
-                }
-                else if (r.depth == maxDepth) {
-                    Lind = at * its.shape->getMaterial().getDiffuseCoefficient();
-                }
-                else {
-
-                    double div = 1 / (4 * pi);
-
-                    for (int i = 0; i < 2; i++) {   
-                        Vector3D random_wi = hs.getSample(its.normal);
-                        Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
-                        if (Utils::hasIntersection(random_ray, objList))
-                            continue;
-                        Vector3D sumTerm = computeColor(random_ray, objList, lsList);
-                        Lind += sumTerm * div;
-                    }
-
-
-                    /*Ray nRay(its.itsPoint, its.normal, r.depth + 1);
-
-                    if (Utils::hasIntersection(nRay, objList))
-                        continue;
-
-                    Vector3D wo = -r.d;
-                    Vector3D wr = its.normal * 2 * dot(its.normal, wo) - wo;
-                    Ray rRay(its.itsPoint, wr, r.depth + 1);
-                    if (Utils::hasIntersection(rRay, objList))
-                        continue;
-                    Vector3D nTerm = computeColor(nRay, objList, lsList);
-                    Vector3D rTerm = computeColor(rRay, objList, lsList);
-                    Lind = (nTerm + rTerm) * div;*/
-                }
-
-                // Compute final color (direct + indirect) light
-                Lo += Ld + Lind;
             }
+
+            // Compute indirect light
+            double pi = 3.1415;
+
+            HemisphericalSampler hs = HemisphericalSampler();
+            int maxDepth = 5;
+            int nSamples = 5;
+
+            if (r.depth == 0) {
+                double div = 1 / (2 * pi * nSamples);
+
+                for (int i = 0; i < nSamples; i++) {
+
+                    Vector3D random_wi = hs.getSample(its.normal);
+                    Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
+                    Vector3D sumTerm = computeColor(random_ray, objList, lsList);
+                    Lind += sumTerm * div;
+                }
+            }
+            else if (r.depth == maxDepth) {
+                Lind = at * its.shape->getMaterial().getDiffuseCoefficient();
+            }
+            else {
+
+                double div = 1 / (4 * pi);
+
+                Ray nRay(its.itsPoint, its.normal, r.depth + 1);
+                Vector3D wo = -r.d;
+                Vector3D wr = its.normal * 2 * dot(its.normal, wo) - wo;
+                Ray rRay(its.itsPoint, wr, r.depth + 1);
+                Vector3D nTerm(0);
+                Vector3D rTerm(0);
+                Lind += (nTerm + rTerm) * div;
+            }
+
+            // Compute final color (direct + indirect) light
+            Lo += Ld + Lind;
 
             
         }

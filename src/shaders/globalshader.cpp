@@ -19,10 +19,12 @@ Vector3D GlobalShader::computeColor(const Ray &r,
     if(Utils::getClosestIntersection(r, objList, its))
     {
         Vector3D Lo(0.0);  
+
        
         //Check if Phong Material
         if (its.shape->getMaterial().hasDiffuseOrGlossy()){
-
+            Vector3D Ld(0.0);       // direct light
+            Vector3D Lind(0.0);     // indirect light
 
             for (auto const& light: lsList) {
                 Vector3D P_L = light.getPosition() - its.itsPoint; //Vector from intersection point to lightsource
@@ -30,30 +32,31 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                 Ray ray_visibility(its.itsPoint, wi, 0, Epsilon, P_L.length());
                 if (Utils::hasIntersection(ray_visibility, objList))
                     continue;
-                
+
                 // Compute direct light
-                Vector3D Ld = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi) * dot(its.normal, wi);
+                Ld = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -r.d, wi);     
 
                 // Compute indirect light
-                Vector3D Lind(0.0);
+
 
                 double pi = 3.1415;
-                
+
                 HemisphericalSampler hs = HemisphericalSampler();
-                int maxDepth = 20;
+                int maxDepth = 5;
                 if (r.depth == 0) {
-                    double div = 1 / (2*pi* maxDepth);
-                    
+                    double div = 1 / (2 * pi * maxDepth);
 
                     for (int i = 0; i < maxDepth; i++) {
 
                         Vector3D random_wi = hs.getSample(its.normal);
-                        Ray random_ray(its.itsPoint, random_wi, 0, Epsilon, P_L.length());
-                        Vector3D sumTerm = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -random_ray.d, random_wi);
+                        Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
+                        if (Utils::hasIntersection(random_ray, objList))
+                            continue;
+                        Vector3D sumTerm = computeColor(random_ray, objList, lsList);
                         Lind += sumTerm * div;
                     }
-                    
-                } else if (r.depth == maxDepth) {
+                }
+                else if (r.depth == maxDepth) {
                     Lind = at * its.shape->getMaterial().getDiffuseCoefficient();
                 }
                 else {
@@ -61,17 +64,20 @@ Vector3D GlobalShader::computeColor(const Ray &r,
                     for (int i = 0; i < 2; i++) {
                         double div = 1 / (4 * pi);
                         Vector3D random_wi = hs.getSample(its.normal);
-                        Ray random_ray(its.itsPoint, random_wi, 0, Epsilon, P_L.length());
-                        Vector3D sumTerm = light.getIntensity(its.itsPoint) * its.shape->getMaterial().getReflectance(its.normal, -random_ray.d, random_wi);
+                        Ray random_ray(its.itsPoint, random_wi, r.depth + 1);
+                        if (Utils::hasIntersection(random_ray, objList))
+                            continue;
+                        Vector3D sumTerm = computeColor(random_ray, objList, lsList);
                         Lind += sumTerm * div;
                     }
                 }
-                
+
                 // Compute final color (direct + indirect light
                 Lo += Ld + Lind;
-                }
-                
             }
+
+            
+        }
 
         if (its.shape->getMaterial().hasSpecular()) {
 
